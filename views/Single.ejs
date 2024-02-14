@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exploring the Wonders of Deep Learning</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  header {
+    background-color: #333;
+    color: #fff;
+   padding: 5px 0 0 0 ;
+    text-align: center;
+  }
+
+  main {
+    padding: 20px;
+  }
+
+  .blog-image {
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+  }
+
+  .blog-content {
+    line-height: 1.6;
+  }
+
+  .blog-content h2 {
+    color: #333;
+  }
+
+  .blog-content p {
+    margin-bottom: 10px;
+  }
+
+  .blog-content a {
+    color: #007bff;
+    text-decoration: none;
+  }
+
+  .blog-content a:hover {
+    text-decoration: underline;
+  }
+
+  .delete_btn{
+     border: none;
+     background-color: #ff0019;
+     color: #fff;
+     padding: 5px 10px;
+     border-radius: 8px;
+     margin-left: 2rem;
+     cursor: pointer;
+  }
+
+  footer {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+</style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Exploring the Wonders of Deep Learning</h1>
+    <%- include( 'Navbar.ejs') %>
+  </header>
+  <main>
+    <img class="blog-image" src="https://www.example.com/deep_learning_image.jpg" alt="Deep Learning">
+    <div class="blog-content">
+      <h2>Title</h2>
+      <p><%- Singleblog[0].Title %></p>
+      
+      <h2>Email</h2>
+      <p><%- Singleblog[0].Email %></p>
+      
+      <h2>Description</h2>
+      <p><%- Singleblog[0].description %></p>
+     
+    </div>
+  </main>
+
+ <a href= "/delete/<%- Singleblog[0].ID %>" ><button class="delete_btn">Delete</button></a> 
+ <a href="/edit/<%- Singleblog[0].ID%>" ><button class="btn">edit</button></a> 
+  <footer>
+    <!-- To iso string ley date ko tarika change garxa .slice key total dat bata 0 dekhi 10 sama ko matra dinxa nalelkhda ni hunxa   -->
+    <p>&copy; <%-Singleblog[0].createdAt.toISOString().slice(0,10) %>. All rights reserved.</p>
+  </footer>
+</body>
+</html>
