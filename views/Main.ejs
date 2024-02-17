@@ -1,38 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="/Css/Style.css">
-<title>Home page</title>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/Css/Style.css">
+    <title>Home page</title>
 </head>
 <body>
-
-
-
-<%- include('Navbar.ejs') %>
-<div class="cards">
-  <!-- here we can use map or forEach function -->
-  <% if (Blogs.length > 0){ %>
-    <% Blogs.forEach((blog)=>{ %>
-      <div class="Card">
-        <h2><%- blog.Title %></h2>
-        <h3><%- blog.Email %></h3>
-        <p><%- blog.description.split(' ').slice(0,6).join( ' ') %></p>
-    
-       <a href="/Single/<%- blog.ID%>" ><button class="btn">See more</button></a> 
-     
-
-      </div>
-     <% }) %>
-   <% }else{ %>
-<p>No Blogs</p>
- <% } %>
-  
-  
-</div>
-
-
+  <%- include('Navbar.ejs') %>
+    <div class="cards">
+        <% if (Blogs && Blogs.length > 0) { %>
+            <% Blogs.forEach((blog) => { %>
+                <div class="Card">
+                    <img src= "<%- blog.Image %>" alt="">
+                   
+                    <h2><%- blog.Title %></h2>
+                    <h3><%- blog.Email %></h3>
+                    <p><%- blog.description.split(' ').slice(0, 6).join(' ') %></p>
+                    <% if (blog.user) { %>
+                        <p>Author: <%- blog.user.Username %></p>
+                        <p>Author Email: <%- blog.user.Email %></p>
+                    <% } %>
+                    <a href="/Single/<%- blog.ID %>"><button class="btn">See more</button></a> 
+                </div>
+            <% }); %>
+        <% } else { %>
+            <p>No Blogs</p>
+        <% } %>
+    </div>
 </body>
 </html>

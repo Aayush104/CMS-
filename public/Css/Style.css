@@ -28,3 +28,8 @@ border-radius: 10px;
     color: #fff;
     cursor: pointer;
   }
+
+  img{
+    width: 140px;
+    height: 100px;
+  }

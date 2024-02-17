@@ -1,11 +1,17 @@
-const { blogs } = require("../../model/exp")
+const { blogs, users } = require("../../model/exp")
 
 exports.create = async (req,res)=>{
 
     //blogs vaney table bata vayejati sabai data retrive
-    const allblogs = await blogs.findAll()
+    const allblogs = await blogs.findAll({
+        include :{
+            model : users,  //model lekhnu parxa cAUSE Y table ko name ho ani kun table join garney tyo lekhnu apryo
 
 
+        }
+    })
+
+// console.log(allblogs)
      
 //blogs vaney key ma allblogsbko data pass garke
     
@@ -13,25 +19,32 @@ exports.create = async (req,res)=>{
 
 }
 
-exports.createBlog = async (req,res)=>{
+exports.createBlog = async (req, res) => {
+
+    const img = req.file.filename
+    const title = req.body.name;
+    const Email = req.body.email;
+    const Message = req.body.message;
+    console.log(title, Email, Message, img);
+
+
+        // Retrieve user ID from req.user
+        const userID = req.user[0].ID
+        // Create a blog with the provided information and user ID
+        await blogs.create({
+            Title: title,
+            Email: Email,
+            Image : process.env.BACKEND + img,
+            description: Message,
+            userID: userID
+        });
+
+        // Redirect to the home page or wherever appropriate
+        res.redirect('/');
+    } 
+        // Handle any errors that occur during blog creation
+       
     
-    const title = req.body.name
-    const Email = req.body.email
-    const Message = req.body.message
-    console.log(title,Email,Message )
-    
-    await blogs.create({
-        Title: title,
-        Email: Email,
-        description: Message
-    
-    })
-    
-        // console.log(req.body)
-        // res.render("Main.ejs")
-        // res.send("form submitted successfully")
-        res.redirect('/')
-    }
     
 exports.createpageRender = async(req,res)=>{
     res.render("Create.ejs")
@@ -46,6 +59,9 @@ exports.SinglePageRender = async (req,res)=>{
 
         where:{
             id : id
+        },
+        include:{
+            model : users,
         }
     })
     res.render("Single.ejs", {Singleblog: blogg} )
@@ -77,14 +93,18 @@ exports.editRender =  async (req,res)=>{
 
     const id = req.params.id
     
-    const editBlog=  await blogs.findAll({ 
-        where : {
-            id : id
-        }
-    })
-    
-    res.render('edit.ejs', {blog : editBlog})
+  
+        const editBlog=  await blogs.findAll({ 
+            where : {
+                id : id
+            }
+        })
+        
+        res.render('edit.ejs', {blog : editBlog})
+        
+
     }
+ 
     
 exports.edit = async (req,res)=>{
     
@@ -108,4 +128,23 @@ const Message = req.body.message
 
     res.redirect("/Single/" + id)
   
+}
+
+
+//my blog page ma jana kko lagi
+exports.myblogsrender = async (req,res)=>{
+  
+    const middleuserID = req.user[0].ID
+
+ const myblogs = await blogs.findAll({
+        where :{
+
+            userID : middleuserID
+        }
+    })
+
+
+
+
+    res.render("myblogs.ejs", {myblogs : myblogs})
 }

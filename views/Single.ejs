@@ -23,11 +23,6 @@
     padding: 20px;
   }
 
-  .blog-image {
-    width: 100%;
-    height: auto;
-    margin-bottom: 20px;
-  }
 
   .blog-content {
     line-height: 1.6;
@@ -36,7 +31,10 @@
   .blog-content h2 {
     color: #333;
   }
-
+  .blog-content img{
+    width: 200px;
+    height: 200px;
+  }
   .blog-content p {
     margin-bottom: 10px;
   }
@@ -79,8 +77,11 @@
     <%- include( 'Navbar.ejs') %>
   </header>
   <main>
-    <img class="blog-image" src="https://www.example.com/deep_learning_image.jpg" alt="Deep Learning">
+   
     <div class="blog-content">
+
+      <img src= "<%- Singleblog[0].Image %>" alt = "" >
+    
       <h2>Title</h2>
       <p><%- Singleblog[0].Title %></p>
       
@@ -90,6 +91,7 @@
       <h2>Description</h2>
       <p><%- Singleblog[0].description %></p>
      
+    
     </div>
   </main>
 
@@ -98,6 +100,8 @@
   <footer>
     <!-- To iso string ley date ko tarika change garxa .slice key total dat bata 0 dekhi 10 sama ko matra dinxa nalelkhda ni hunxa   -->
     <p>&copy; <%-Singleblog[0].createdAt.toISOString().slice(0,10) %>. All rights reserved.</p>
+   
+
   </footer>
 </body>
 </html>

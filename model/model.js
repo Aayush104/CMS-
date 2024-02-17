@@ -15,6 +15,10 @@ allowNull: false,
             type : DataTypes.STRING,
             allowNull : false
         },
+        Image: {
+            type : DataTypes.STRING,
+            allowNull : false
+        },
         description: {
             type: DataTypes.STRING,
             allowNull: false
