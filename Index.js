@@ -19,6 +19,19 @@ app.set("view engine", 'ejs')
 
 //cookie bata aako data padhna lai middleware authenticaion ko lagi
 app.use(cookieParser())
+
+
+
+//NAVBAR DYNamics ko lagi  middleware  banauney
+
+app.use((req,res,next)=>{
+
+   res.locals.currentUser = req.cookies.token
+    next()
+})
+
+
+
 //nodelai File access garna dey vaneko
 app.use(express.static("public/"))
 app.use(express.static("uploads/"))
@@ -44,7 +57,7 @@ app.get('/Delete/:id',isAuthenticated,Delete)
 
 
 //database nma halna ko lagi
-app.post('/create', isAuthenticated, upload.array("img"),createBlog)
+app.post('/create', isAuthenticated, upload.single("img"),createBlog)
 //edit ko api banako
 app.get('/edit/:id', isAuthenticated, editRender )
 

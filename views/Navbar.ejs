@@ -42,13 +42,19 @@
         </style>
 <div class="navbar">
     <div class="navlist">
-    <li> <a href="/">Home</a></li>
-    <li> <a href="/create">Create Blog</a></li>
-    <li> <a href="#home">Contact</a></li>
-    <li> <a href="/myblog">my blogs</a></li>
-    <li> <a href="/login">Login</a></li>
-    <li> <a href="/register">Register</a></li>
 
+     <% if(currentUser){ %>
+      <li> <a href="/create">Create Blog</a></li>
+      <li> <a href="/myblog">my blogs</a></li>
+      <li> <a href="/#home">logOut</a></li>
+    <% }else{ %>
+
+      <li> <a href="/login">Login</a></li>
+      <li> <a href="/register">Register</a></li>
+  
+    <% } %>
+  
+  
 </div>
 
 </div>
