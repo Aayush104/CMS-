@@ -2,7 +2,7 @@
 const express = require('express')
 // const { blogs, users } = require('./model/exp')
 const { create,createBlog,createpageRender,SinglePageRender,Delete,editRender,edit, myblogsrender} = require('./Controller/blog/blogcontroller')
-const { RenderRegister,CreateUser,RenderLogin, LoginUser } = require('./Controller/Auth/authController')
+const { RenderRegister,CreateUser,RenderLogin, LoginUser, LogOut } = require('./Controller/Auth/authController')
 const app = express()
 const bcrypt = require('bcrypt')
 const { isAuthenticated } = require('./Middleware/isAuthenticated')
@@ -47,10 +47,10 @@ const upload = multer({storage : storage})
 app.get('/',create)
 
 //createpagerender
-app.get('/create',createpageRender)
+app.get('/create', isAuthenticated, createpageRender)
 
 // Single blog page render
-app.get("/Single/:id", SinglePageRender)
+app.get("/Single/:id", isAuthenticated, SinglePageRender)
 
 
 app.get('/Delete/:id',isAuthenticated,Delete)
@@ -66,7 +66,7 @@ app.get('/edit/:id', isAuthenticated, editRender )
 app.post('/edit/:id', isAuthenticated, edit)
 
 //register page ma render gar
-app.get('/register', RenderRegister)
+app.get('/register', isAuthenticated,RenderRegister)
 
 app.get('/myblog', isAuthenticated, myblogsrender)
 
@@ -78,6 +78,10 @@ app.get('/login', RenderLogin)
 
 //Login Garney yaha bata ho
 app.post('/loginUser', LoginUser  )
+
+//logout ko 
+
+app.get('/logout', LogOut)
 
 app.listen(3000, ()=>{
     console.log("Server is running on port 3000")
