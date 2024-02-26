@@ -74,12 +74,16 @@ padding: 1rem 0 0 0;
     </div>
      
     <div class="forms">
-<form action="/edit/<%-blog[0].ID %>" method="POST">
+<form action="/edit/<%-blog[0].ID %>" method="POST" enctype="multipart/form-data">
     <label for="name">title:</label>
     <input type="text" value="<%-blog[0].Title %>" id="name" name="name" required>
   
     <label for="email">Email:</label>
     <input type="email" value="<%-blog[0].Email %>"id="email" name="email" required>
+    
+    <label for="image">Image:</label>
+    <input type="file" id="img" name="img">
+
   
     <label for="message">Description:</label>
     <textarea id="message" name="message" rows="4" required><%-blog[0].description%>

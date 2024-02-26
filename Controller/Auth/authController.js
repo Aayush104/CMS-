@@ -102,3 +102,9 @@ exports.LogOut = (req,res)=>{
     res.clearCookie('token')
     res.redirect("/login")
 }
+
+exports.Forgot = (req,res)=>{
+
+   res.render('Forgot.ejs')
+
+}

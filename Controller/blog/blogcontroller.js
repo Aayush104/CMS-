@@ -1,4 +1,5 @@
 const { blogs, users } = require("../../model/exp")
+const fs = require("fs")
 
 exports.create = async (req,res)=>{
 
@@ -83,7 +84,8 @@ exports.Delete =  async (req,res)=>{
             id : id
         }
     }) 
-    // console.log(blogs.length)
+   
+    
     
    res.redirect('/')
 }
@@ -107,24 +109,58 @@ exports.editRender =  async (req,res)=>{
  
     
 exports.edit = async (req,res)=>{
-    
+
+    const id = req.params.id
     const title = req.body.name
 const Email = req.body.email
 const Message = req.body.message
+
+const olddata = await blogs.findAll({
+    where :{
+        id : id
+    }
+})
   
 
+let fileUrl
 
-    const id = req.params.id
+if(req.file){
+   fileUrl= process.env.BACKEND + req.file.filename
+   
+const oldImage = olddata[0].Image
+console.log(oldImage); //http://localhost:3000/1708163397639-8822310.jpg
+
+const length_of_unwanted = "http://localhost:3000/".length
+console.log(length_of_unwanted ) //22
+
+const filenameinupfolder=oldImage.slice(length_of_unwanted)
+
+
+
+    fs.unlink('uploads/' + filenameinupfolder, (err) => {
+        if (err) {
+            console.log('werror while deleting file');
+        }else{
+            console.log('Delet successfull')
+        }
+       
+      });
+}else{
+   fileUrl= olddata[0].Image
+}
+ 
     await blogs.update({
         Title: title,
         Email: Email,
         description: Message,
+        Image : fileUrl
       
     },{
         where :{
             id : id
         }
     })
+
 
     res.redirect("/Single/" + id)
   
