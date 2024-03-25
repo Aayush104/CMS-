@@ -20,7 +20,16 @@ app.set("view engine", 'ejs')
 //cookie bata aako data padhna lai middleware authenticaion ko lagi
 app.use(cookieParser())
 
+const session = require("express-session")
+const flash = require("connect-flash")
 
+app.use(session({
+    secret : "Iamaayush",
+    resave : false,
+    saveUninitialized: false
+}))
+
+app.use(flash())
 
 //NAVBAR DYNamics ko lagi  middleware  banauney
 
@@ -43,6 +52,7 @@ app.use(express.urlencoded({extended:true}))
 const {multer, storage} = require("./Middleware/MulterConfig");
 const { users } = require('./model/exp')
 const sendEmail = require('./Services/Sendemail')
+const catchError = require('./Services/catchError')
 const upload = multer({storage : storage})
 
 //main page render
@@ -59,7 +69,7 @@ app.get('/Delete/:id',isAuthenticated,Delete)
 
 
 //database nma halna ko lagi
-app.post('/create', isAuthenticated, upload.single("img"),createBlog)
+app.post('/create', catchError(isAuthenticated), upload.single("img"),createBlog)
 //edit ko api banako
 app.get('/edit/:id', isAuthenticated, editRender )
 
@@ -73,7 +83,7 @@ app.get('/register',RenderRegister)
 app.get('/myblog', isAuthenticated, myblogsrender)
 
 //User lai data base ma halna ko lagi
-app.post('/registerUser',CreateUser)
+app.post('/registerUser',catchError(CreateUser))
 
 //Login page ma render gar
 app.get('/login', RenderLogin)

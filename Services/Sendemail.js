@@ -8,7 +8,7 @@ const sendEmail = async(options)=>{
 
         auth:{
             user:"aayushadhikari601@gmail.com",
-            pass:'tervdjrbiedxapqs'
+            pass:'zfdeskszyzkkbyfe'
         }
 
     });
@@ -22,4 +22,4 @@ const mailoptions = {
 await transporter.sendMail(mailoptions);
 }
 
-module.exports  = sendEmail
+module.exports  = sendEmail;

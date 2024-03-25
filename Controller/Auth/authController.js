@@ -6,7 +6,8 @@ const jwt = require('jsonwebtoken')
 
 
 exports.RenderRegister= (req,res)=>{
-    res.render("Register.ejs")
+    const error = req.flash("error")
+    res.render("Register.ejs",{error})
 }
 
 exports.CreateUser = async (req, res) => {
@@ -21,7 +22,7 @@ exports.CreateUser = async (req, res) => {
         return res.send("Please Fill All data");
     }
 
-    try {
+ 
         const userExist = await users.findOne({ 
             where: {
                 Email: Email
@@ -43,14 +44,12 @@ exports.CreateUser = async (req, res) => {
         });
 
         res.redirect("/login");
-    } catch (error) {
-        console.log("Error occurred: ", error);
-        return res.send("Error occurred while creating user.");
-    }
+  
 }
 
 
 exports.RenderLogin= (req,res)=>{
+  
     res.render("Login.ejs")
 }
 
@@ -86,7 +85,8 @@ exports.LoginUser = async (req,res)=>{
         res.cookie('token',token)
          res.send("Login Success")
     }else{
-        res.send("Incorrect password");
+        req.flash("error","Incorrect password");
+        res.redirect("/register")
     }
     }catch(error){
         res.status(400).send("error occur")
