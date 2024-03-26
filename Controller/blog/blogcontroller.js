@@ -1,5 +1,8 @@
 const { blogs, users } = require("../../model/exp")
-const fs = require("fs")
+const fs = require("fs");
+const db = require('../../model/exp');
+const { query } = require("express");
+const sequelize = db.sequelize
 
 exports.create = async (req,res)=>{
 
@@ -21,28 +24,34 @@ exports.create = async (req,res)=>{
 }
 
 exports.createBlog = async (req, res) => {
-
-    const img = req.file.filename
-    const title = req.body.name;
-    const Email = req.body.email;
-    const Message = req.body.message;
-    console.log(title, Email, Message, img);
-
+    try {
+        const img = req.file.filename;
+        const title = req.body.name;
+        const Email = req.body.email;
+        const Message = req.body.message;
+        console.log(title, Email, Message, img);
 
         // Retrieve user ID from req.user
-        const userID = req.user[0].ID
+        const userID = req.user[0].ID;
+
         // Create a blog with the provided information and user ID
-        await blogs.create({
-            Title: title,
-            Email: Email,
-            Image : process.env.BACKEND + img,
-            description: Message,
-            userID: userID
-        });
+        await sequelize.query(
+            "INSERT INTO blogs (Title, Email, Image, description, userID) VALUES (?, ?, ?, ?, ?)",
+            {
+                replacements: [title, Email, img, Message, userID],
+                type: sequelize.QueryTypes.INSERT // Changed to INSERT
+            }
+        );
 
         // Redirect to the home page or wherever appropriate
         res.redirect('/');
-    } 
+    } catch (error) {
+        console.error(error);
+        // Handle error response
+        res.status(500).send("Error creating blog");
+    }
+};
+
         // Handle any errors that occur during blog creation
        
     
@@ -168,19 +177,28 @@ const filenameinupfolder=oldImage.slice(length_of_unwanted)
 
 
 //my blog page ma jana kko lagi
-exports.myblogsrender = async (req,res)=>{
-  
-    const middleuserID = req.user[0].ID
+exports.myblogsrender = async (req, res) => {
+    const middleuserID = req.user[0].ID;
 
- const myblogs = await blogs.findAll({
-        where :{
+    try {
+        const myblogs = await sequelize.query("SELECT * FROM blogs WHERE userID = :middleuserID", {
+            replacements: { middleuserID }, // Using parameterized query for safety
+            type: sequelize.QueryTypes.SELECT // Corrected typo
+        });
 
-            userID : middleuserID
-        }
-    })
+        res.render("myblogs.ejs", { myblogs }); // Passed myblogs as object property
 
-
-
-
-    res.render("myblogs.ejs", {myblogs : myblogs})
+    } catch (error) {
+        console.error(error); // Log any errors
+        // Handle error response
+        res.status(500).send("Error fetching blogs");
+    }
 }
+
+
+//  const myblogs = await blogs.findAll({
+//         where :{
+
+//             userID : middleuserID
+//         }
+//     })
