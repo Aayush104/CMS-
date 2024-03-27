@@ -34,6 +34,23 @@ exports.createBlog = async (req, res) => {
         // Retrieve user ID from req.user
         const userID = req.user[0].ID;
 
+        // Multitent architecture
+
+        //Create a unie table for each user
+        // await sequelize.query(`CREATE TABLE IF NOT EXISTS blogs_${userID} (ID INT PRIMARY KEY NOT NULL AUTO_INCREMENT, Title VARCHAR(255), Email VARCHAR(255), Image VARCHAR(255), description VARCHAR(255), userID INT REFERENCES users(ID))`, {
+        //     type: QueryTypes.CREATE
+        // })
+
+        // // Inserthe data to users belonging table
+        // await sequelize.query(
+        //     `INSERT INTO blogs_${userID}(Title, Email, Image, description, userID) VALUES (?, ?, ?, ?, ?)`,
+        //     {
+        //         replacements: [title, Email, img, Message, userID],
+        //         type: sequelize.QueryTypes.INSERT // Changed to INSERT
+        //     }
+        // );
+
+
         // Create a blog with the provided information and user ID
         await sequelize.query(
             "INSERT INTO blogs (Title, Email, Image, description, userID) VALUES (?, ?, ?, ?, ?)",
